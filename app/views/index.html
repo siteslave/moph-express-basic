@@ -1,6 +1,56 @@
 <%- include('./layout.html') -%>
 
-<h1><%= title %></h1>
-<p>Welcome to <%= title%></p>
+  <nav aria-label="breadcrumb" role="navigation">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item active" aria-current="page">Home</li>
+    </ol>
+  </nav>
 
-<%- include('./footer.html') -%>
+  <div class="row" style="padding-bottom: 5px;">
+    <div class="col-md-6">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search for..." aria-label="Search for...">
+        <span class="input-group-btn">
+          <button class="btn btn-secondary" type="button">
+            <span class="fa fa-search"></span> ค้นหา
+          </button>
+          <button class="btn btn-success" type="button">
+            <span class="fa fa-plus"></span> เพิ่มรายการ
+          </button>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">First Name</th>
+        <th scope="col">Last Name</th>
+        <th scope="col">Username</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>Mark</td>
+        <td>Otto</td>
+        <td>@mdo</td>
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>Jacob</td>
+        <td>Thornton</td>
+        <td>@fat</td>
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+        <td>Larry</td>
+        <td>the Bird</td>
+        <td>@twitter</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <%- include('./footer.html') -%>
