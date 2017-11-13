@@ -1,0 +1,13 @@
+<h1>Hello, <%= title %></h1>
+
+<ul>
+  <% fruits.forEach(v => { %>
+    <li><%=v%></li>
+  <% }) %>
+</ul>
+
+<ul>
+  <% cars.forEach(v => { %>
+    <li><%=v.brand%> - <%=v.model%></li>
+  <% }) %>
+</ul>
