@@ -32,8 +32,20 @@ router.get('/test', async (req, res, next) => {
 
 router.get('/', async (req, res, next) => {
   let rs = await userModel.getUsers(req.db);
-  res.render('index', { title: 'Express', users: rs });
+  res.render('index', { title: 'Index', users: rs });
 });
+
+router.get('/search', async (req, res, next) => {
+  let query = req.query.q;
+  let rs = await userModel.search(req.db, query);
+  res.render('index', { title: 'Search', users: rs });
+});
+
+router.get('/remove/:userId', async (req, res, next) => {
+  let userId = req.params.userId;
+  await userModel.removeUser(req.db, userId);
+  res.redirect('/');
+})
 
 router.get('/hello/world', (req, res, next) => {
   let fruits = ['Apple', 'Banana', 'Orange']

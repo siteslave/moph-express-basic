@@ -6,21 +6,23 @@
     </ol>
   </nav>
 
-  <div class="row" style="padding-bottom: 5px;">
-    <div class="col-md-6">
-      <div class="input-group">
-        <input type="text" class="form-control" placeholder="Search for..." aria-label="Search for...">
-        <span class="input-group-btn">
-          <button class="btn btn-secondary" type="button">
-            <span class="fa fa-search"></span> ค้นหา
-          </button>
-          <button class="btn btn-success" type="button">
-            <span class="fa fa-plus"></span> เพิ่มรายการ
-          </button>
-        </span>
-      </div>
-    </div>
-  </div>
+  <form action="/search" method="GET">
+    <div class="row" style="padding-bottom: 5px;">
+        <div class="col-md-6">
+          <div class="input-group">
+            <input type="text" name="q" class="form-control" placeholder="Search for..." aria-label="Search for...">
+            <span class="input-group-btn">
+              <button class="btn btn-secondary" type="submit">
+                <span class="fa fa-search"></span> ค้นหา
+              </button>
+              <button class="btn btn-success" type="button">
+                <span class="fa fa-plus"></span> เพิ่มรายการ
+              </button>
+            </span>
+          </div>
+        </div>
+      </div> 
+  </form>
 
   <table class="table">
     <thead>
@@ -53,9 +55,9 @@
                 <button class="btn btn-success">
                   <span class="fa fa-pencil"></span>
                 </button>
-                <button class="btn btn-danger">
+                <a href="/remove/<%=v.user_id%>" class="btn btn-danger" data-name="btnRemove">
                   <span class="fa fa-trash"></span>
-                </button>
+                </a>
               </div>
             </td>
           </tr>
@@ -63,5 +65,19 @@
       
     </tbody>
   </table>
+
+  <script>
+    $(document).ready(() => {
+
+      $(document).on('click', 'a[data-name="btnRemove"]', (e) => {
+        if (confirm('Are you sure?.')) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+
+    });
+</script>
 
   <%- include('./footer.html') -%>

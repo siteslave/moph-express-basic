@@ -29,7 +29,17 @@ router.get('/test', (req, res, next) => __awaiter(this, void 0, void 0, function
 }));
 router.get('/', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
     let rs = yield userModel.getUsers(req.db);
-    res.render('index', { title: 'Express', users: rs });
+    res.render('index', { title: 'Index', users: rs });
+}));
+router.get('/search', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+    let query = req.query.q;
+    let rs = yield userModel.search(req.db, query);
+    res.render('index', { title: 'Search', users: rs });
+}));
+router.get('/remove/:userId', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+    let userId = req.params.userId;
+    yield userModel.removeUser(req.db, userId);
+    res.redirect('/');
 }));
 router.get('/hello/world', (req, res, next) => {
     let fruits = ['Apple', 'Banana', 'Orange'];
