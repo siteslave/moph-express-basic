@@ -23,6 +23,14 @@ class UserModel {
         let sql = 'DELETE FROM users WHERE user_id=?';
         return db.raw(sql, [userId]);
     }
+    getUserTypeList(db) {
+        let subQuery = db('users as u')
+            .whereRaw('u.user_type_id=ut.user_type_id')
+            .count('*')
+            .as('total');
+        return db('user_types as ut')
+            .select('ut.user_type_name', subQuery);
+    }
 }
 exports.UserModel = UserModel;
 class UserTypeModel {

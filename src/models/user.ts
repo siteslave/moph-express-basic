@@ -1,4 +1,5 @@
 import * as Knex from 'knex';
+import * as mysql from 'mysql';
 
 export class UserModel {
   getUsers(db: Knex) {
@@ -9,6 +10,7 @@ export class UserModel {
   }
 
   search(db: Knex, query: any) {
+  
     let _query = '%' + query + '%';
 
     return db('users as u')
@@ -25,6 +27,16 @@ export class UserModel {
   removeUser(db: Knex, userId: any) {
     let sql = 'DELETE FROM users WHERE user_id=?'
     return db.raw(sql, [userId])
+  }
+
+  getUserTypeList(db: Knex) {
+    let subQuery = db('users as u')
+    .whereRaw('u.user_type_id=ut.user_type_id')
+    .count('*')
+    .as('total');
+
+    return db('user_types as ut')
+    .select('ut.user_type_name', subQuery);
   }
 
 }

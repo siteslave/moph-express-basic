@@ -41,6 +41,11 @@ router.get('/remove/:userId', (req, res, next) => __awaiter(this, void 0, void 0
     yield userModel.removeUser(req.db, userId);
     res.redirect('/');
 }));
+router.get('/user-types', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+    let userId = req.params.userId;
+    let rs = yield userModel.getUserTypeList(req.db);
+    res.send(rs);
+}));
 router.get('/hello/world', (req, res, next) => {
     let fruits = ['Apple', 'Banana', 'Orange'];
     let cars = [

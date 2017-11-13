@@ -47,6 +47,12 @@ router.get('/remove/:userId', async (req, res, next) => {
   res.redirect('/');
 })
 
+router.get('/user-types', async (req, res, next) => {
+  let userId = req.params.userId;
+  let rs = await userModel.getUserTypeList(req.db);
+  res.send(rs)
+})
+
 router.get('/hello/world', (req, res, next) => {
   let fruits = ['Apple', 'Banana', 'Orange']
   let cars = [
