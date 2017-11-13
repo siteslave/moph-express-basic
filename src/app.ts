@@ -1,5 +1,7 @@
 'use strict';
 
+require('dotenv').config();
+
 import * as express from 'express';
 import * as path from 'path';
 import * as favicon from 'serve-favicon';
@@ -8,6 +10,9 @@ import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
 import index from './routes/index';
 import * as ejs from 'ejs';
+
+import Knex = require('knex');
+import { MySqlConnectionConfig } from 'knex';
 
 const app: express.Express = express();
 
@@ -24,6 +29,25 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+const connection: MySqlConnectionConfig = {
+  host: process.env.DB_HOST,
+  port: +process.env.DB_PORT,
+  database: process.env.DB_NAME,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD
+}
+
+const db = Knex({
+  client: 'mysql',
+  connection: connection
+});
+
+app.use((req, res, next) => {
+  // console.log('Middleware......')
+  req.db = db;
+  next();
+})
 
 app.use('/', index);
 
