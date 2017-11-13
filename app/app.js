@@ -27,7 +27,8 @@ const connection = {
 };
 const db = Knex({
     client: 'mysql',
-    connection: connection
+    connection: connection,
+    debug: true
 });
 app.use((req, res, next) => {
     req.db = db;

@@ -40,7 +40,8 @@ const connection: MySqlConnectionConfig = {
 
 const db = Knex({
   client: 'mysql',
-  connection: connection
+  connection: connection,
+  debug: true
 });
 
 app.use((req, res, next) => {

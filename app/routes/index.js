@@ -1,10 +1,36 @@
 'use strict';
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const router = express.Router();
-router.get('/', (req, res, next) => {
-    res.render('index', { title: 'Express' });
-});
+const user_1 = require("../models/user");
+const userModel = new user_1.UserModel();
+router.get('/test', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+    const db = req.db;
+    try {
+        let rs = yield db('users as u')
+            .leftJoin('user_types as ut', 'ut.user_type_id', 'u.user_type_id')
+            .select('u.username', 'ut.user_type_name');
+        let rs2 = yield db('user_types');
+        res.send({ rows: rs, types: rs2 });
+    }
+    catch (error) {
+        res.send({ error: error.message });
+    }
+    finally {
+    }
+}));
+router.get('/', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+    let rs = yield userModel.getUsers(req.db);
+    res.render('index', { title: 'Express', users: rs });
+}));
 router.get('/hello/world', (req, res, next) => {
     let fruits = ['Apple', 'Banana', 'Orange'];
     let cars = [

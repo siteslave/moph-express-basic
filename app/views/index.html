@@ -29,27 +29,38 @@
         <th scope="col">First Name</th>
         <th scope="col">Last Name</th>
         <th scope="col">Username</th>
+        <th scope="col">Active</th>
+        <th scope="col"></th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td>Larry</td>
-        <td>the Bird</td>
-        <td>@twitter</td>
-      </tr>
+
+      <% users.forEach(v => { %>
+        <tr>
+            <th scope="row"><%=v.user_id%></th>
+            <td><%=v.first_name%></td>
+            <td><%=v.last_name%></td>
+            <td><%=v.username%></td>
+            <td>
+              <% if (v.is_active === 'Y') { %>
+                <span class="fa fa-check"></span>
+                <%} else { %>
+                  <span class="fa fa-times"></span>
+              <%}%>
+            </td>
+            <td>
+              <div class="btn-group">
+                <button class="btn btn-success">
+                  <span class="fa fa-pencil"></span>
+                </button>
+                <button class="btn btn-danger">
+                  <span class="fa fa-trash"></span>
+                </button>
+              </div>
+            </td>
+          </tr>
+      <% }) %>
+      
     </tbody>
   </table>
 

@@ -3,9 +3,36 @@
 import * as express from 'express';
 const router = express.Router();
 
-/* GET home page. */
-router.get('/', (req, res, next) => {
-  res.render('index', { title: 'Express' });
+import { UserModel, UserTypeModel as UserType } from '../models/user';
+const userModel = new UserModel();
+
+// async/await
+
+router.get('/test', async (req, res, next) => {
+ 
+  const db = req.db;
+  // let sql = 'SELECT * FROM users WHERE user_type_id=?';
+
+  try {
+    let rs = await db('users as u') // SELECT * FROM users
+    // .where('u.user_id', 1)
+    .leftJoin('user_types as ut', 'ut.user_type_id', 'u.user_type_id')
+    .select('u.username', 'ut.user_type_name');
+  
+    let rs2 = await db('user_types');
+    res.send({rows: rs, types: rs2});
+  
+  } catch (error) {
+    res.send({error: error.message})
+  } finally {
+    // db.destroy();
+  }
+
+});
+
+router.get('/', async (req, res, next) => {
+  let rs = await userModel.getUsers(req.db);
+  res.render('index', { title: 'Express', users: rs });
 });
 
 router.get('/hello/world', (req, res, next) => {
@@ -34,5 +61,9 @@ router.post('/hi', (req, res, next) => {
 
   res.send({name: name, age: age});
 })
+
+// ums routing
+
+
 
 export default router;
