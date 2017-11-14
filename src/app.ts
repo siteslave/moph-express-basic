@@ -8,8 +8,13 @@ import * as favicon from 'serve-favicon';
 import * as logger from 'morgan';
 import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
+
 import index from './routes/index';
+import login from './routes/login';
+
 import * as ejs from 'ejs';
+
+const session = require('express-session');
 
 import Knex = require('knex');
 import { MySqlConnectionConfig } from 'knex';
@@ -48,9 +53,25 @@ app.use((req, res, next) => {
   // console.log('Middleware......')
   req.db = db;
   next();
-})
+});
 
-app.use('/', index);
+app.use(session({
+  secret: 'testsession0011122233',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}));
+
+var auth = (req, res, next) => {
+  if (req.session.logged) {
+    next();
+  } else {
+    res.redirect('/login');
+  }
+}
+
+app.use('/login', login);
+app.use('/', auth, index);
 
 //catch 404 and forward to error handler
 app.use((req, res, next) => {

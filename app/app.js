@@ -7,7 +7,9 @@ const logger = require("morgan");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const index_1 = require("./routes/index");
+const login_1 = require("./routes/login");
 const ejs = require("ejs");
+const session = require('express-session');
 const Knex = require("knex");
 const app = express();
 app.set('views', path.join(__dirname, 'views'));
@@ -34,7 +36,22 @@ app.use((req, res, next) => {
     req.db = db;
     next();
 });
-app.use('/', index_1.default);
+app.use(session({
+    secret: 'testsession0011122233',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
+}));
+var auth = (req, res, next) => {
+    if (req.session.logged) {
+        next();
+    }
+    else {
+        res.redirect('/login');
+    }
+};
+app.use('/login', login_1.default);
+app.use('/', auth, index_1.default);
 app.use((req, res, next) => {
     var err = new Error('Not Found');
     err['status'] = 404;
