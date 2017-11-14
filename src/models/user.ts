@@ -39,10 +39,15 @@ export class UserModel {
     .select('ut.user_type_name', subQuery);
   }
 
+  saveUser(db: Knex, user: any) {
+    return db('users').insert(user); // INSERT INTO users(xx,yy,zz) VALUES()
+  }
+
 }
 
 export class UserTypeModel {
   getUserTypeList(db: Knex) {
-    return db('user_types')
+    return db('user_types').orderBy('user_type_name', 'DESC') 
+    // SELECT * FROM user_types ORDER BY user_type_name DESC
   }
 }

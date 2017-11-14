@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const router = express.Router();
+const crypto = require("crypto");
 const user_1 = require("../models/user");
 const userModel = new user_1.UserModel();
 const userTypeModel = new user_1.UserTypeModel();
@@ -35,6 +36,25 @@ router.get('/', (req, res, next) => __awaiter(this, void 0, void 0, function* ()
 router.get('/new', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
     let rs = yield userTypeModel.getUserTypeList(req.db);
     res.render('new', { title: 'New user', types: rs });
+}));
+router.post('/add', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+    let username = req.body.username;
+    let password = req.body.password;
+    let firstName = req.body.firstName;
+    let lastName = req.body.lastName;
+    let isActive = req.body.isActive ? 'Y' : 'N';
+    let userTypeId = req.body.userType;
+    let encPassword = crypto.createHash('md5').update(password).digest('hex');
+    let user = {
+        username: username,
+        password: encPassword,
+        first_name: firstName,
+        last_name: lastName,
+        is_active: isActive,
+        user_type_id: userTypeId
+    };
+    yield userModel.saveUser(req.db, user);
+    res.redirect('/');
 }));
 router.get('/search', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
     let query = req.query.q;

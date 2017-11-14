@@ -31,11 +31,14 @@ class UserModel {
         return db('user_types as ut')
             .select('ut.user_type_name', subQuery);
     }
+    saveUser(db, user) {
+        return db('users').insert(user);
+    }
 }
 exports.UserModel = UserModel;
 class UserTypeModel {
     getUserTypeList(db) {
-        return db('user_types');
+        return db('user_types').orderBy('user_type_name', 'DESC');
     }
 }
 exports.UserTypeModel = UserTypeModel;
