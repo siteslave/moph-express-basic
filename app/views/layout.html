@@ -28,7 +28,11 @@
     <div class="collapse navbar-collapse" id="navbarText">
       <div class="mr-auto"></div>
       <span class="navbar-text">
-        Satit Rianpit
+        <%if(session.fullname) {%>
+          <%=session.fullname%>
+          <%} else {%>
+            Guest
+            <%}%>
       </span>
     </div>
   </nav>

@@ -3,7 +3,8 @@ import Knex = require('knex');
 declare global {
   namespace Express {
     export interface Request {
-      db: Knex
+      db: Knex;
+      session: any;
     }
   }
 }

@@ -42,6 +42,10 @@ app.use(session({
     saveUninitialized: true,
     cookie: { secure: false }
 }));
+app.use((req, res, next) => {
+    res.locals.session = req.session;
+    next();
+});
 var auth = (req, res, next) => {
     if (req.session.logged) {
         next();

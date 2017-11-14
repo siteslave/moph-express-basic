@@ -44,6 +44,14 @@ class UserModel {
             .select('user_id', 'username', 'first_name', 'last_name', 'user_type_id', 'is_active')
             .where('user_id', userId);
     }
+    doLogin(db, username, password) {
+        return db('users')
+            .select(db.raw('concat(first_name, " ", last_name) as fullname'))
+            .where({
+            username: username,
+            password: password
+        });
+    }
 }
 exports.UserModel = UserModel;
 class UserTypeModel {
