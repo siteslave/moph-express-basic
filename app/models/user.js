@@ -34,6 +34,16 @@ class UserModel {
     saveUser(db, user) {
         return db('users').insert(user);
     }
+    updateUser(db, userId, user) {
+        return db('users')
+            .where('user_id', userId)
+            .update(user);
+    }
+    getDetail(db, userId) {
+        return db('users')
+            .select('user_id', 'username', 'first_name', 'last_name', 'user_type_id', 'is_active')
+            .where('user_id', userId);
+    }
 }
 exports.UserModel = UserModel;
 class UserTypeModel {

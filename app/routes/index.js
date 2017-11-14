@@ -37,6 +37,11 @@ router.get('/new', (req, res, next) => __awaiter(this, void 0, void 0, function*
     let rs = yield userTypeModel.getUserTypeList(req.db);
     res.render('new', { title: 'New user', types: rs });
 }));
+router.get('/edit/:userId', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+    let rs = yield userTypeModel.getUserTypeList(req.db);
+    let user = yield userModel.getDetail(req.db, req.params.userId);
+    res.render('edit', { title: 'Edit user', types: rs, user: user[0] });
+}));
 router.post('/add', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
     let username = req.body.username;
     let password = req.body.password;
@@ -59,7 +64,39 @@ router.post('/add', (req, res, next) => __awaiter(this, void 0, void 0, function
     }
     else {
         let rs = yield userTypeModel.getUserTypeList(req.db);
-        res.render('new', { title: 'New user', types: rs, error: 'ข้อมูลไม่ครบ' });
+        res.render('new', {
+            title: 'New user',
+            types: rs,
+            error: 'ข้อมูลไม่ครบ',
+            username: username,
+            firstName: firstName,
+            lastName: lastName
+        });
+    }
+}));
+router.post('/update', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+    let userId = req.body.userId;
+    let password = req.body.password;
+    let firstName = req.body.firstName;
+    let lastName = req.body.lastName;
+    let isActive = req.body.isActive ? 'Y' : 'N';
+    let userTypeId = req.body.userType;
+    if (userId && firstName && lastName) {
+        let user = {
+            first_name: firstName,
+            last_name: lastName,
+            is_active: isActive,
+            user_type_id: userTypeId
+        };
+        if (password) {
+            let encPassword = crypto.createHash('md5').update(password).digest('hex');
+            user.password = encPassword;
+        }
+        yield userModel.updateUser(req.db, userId, user);
+        res.redirect('/');
+    }
+    else {
+        res.redirect('/edit/' + userId);
     }
 }));
 router.get('/search', (req, res, next) => __awaiter(this, void 0, void 0, function* () {

@@ -43,6 +43,18 @@ export class UserModel {
     return db('users').insert(user); // INSERT INTO users(xx,yy,zz) VALUES()
   }
 
+  updateUser(db: Knex, userId: any, user: any) {
+    return db('users')
+    .where('user_id', userId)
+    .update(user); // UPDATE users SET xx=yy WHERE user_id=xxx
+  }
+
+  getDetail(db: Knex, userId: any) {
+    return db('users')
+    .select('user_id', 'username', 'first_name', 'last_name', 'user_type_id', 'is_active')
+    .where('user_id', userId); // SELECT * FROM users WHERE user_id=xxx
+  }
+
 }
 
 export class UserTypeModel {

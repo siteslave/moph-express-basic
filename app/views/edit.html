@@ -16,14 +16,12 @@
           <%=error%>
         </div>
         <% } %>
-          <form action="/add" method="POST">
+          <form action="/update" method="POST">
+            <input type="hidden" name="userId" value="<%=user.user_id%>">
             <div class="form-group">
               <label for="username">Username</label>
-              <%if (typeof username != "undefined") {%>
-                <input type="text" class="form-control" value="<%=username%>" id="username" name="username" aria-describedby="username" placeholder="Enter username">
-                <% } else {%>
-                  <input type="text" class="form-control" id="username" name="username" aria-describedby="username" placeholder="Enter username">
-                  <% } %>
+              <input type="text" class="form-control" 
+              value="<%=user.username%>" disabled id="username" name="username" aria-describedby="username" placeholder="Enter username">              
             </div>
             <div class="form-group">
               <label for="password">Password</label>
@@ -35,13 +33,13 @@
                 <div class="form-group">
                   <label for="firstName">First name</label>
                   <input type="text" class="form-control" id="firstName" name="firstName" aria-describedby="firstName"
-                    placeholder="Enter first name">
+                    placeholder="Enter first name" value="<%=user.first_name%>">
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="lastName">Last name</label>
-                  <input type="text" class="form-control" id="lastName" name="lastName" aria-describedby="lastName" placeholder="Enter last name">
+                  <input type="text" class="form-control" value="<%=user.last_name%>" id="lastName" name="lastName" aria-describedby="lastName" placeholder="Enter last name">
                 </div>
               </div>
             </div>
@@ -50,16 +48,34 @@
               <label for="userType">User type</label>
               <select class="form-control" name="userType" id="userType">
                 <% types.forEach(v => { %>
-                  <option value="<%=v.user_type_id%>">
-                    <%=v.user_type_name%>
-                  </option>
+
+                  <%if (v.user_type_id === user.user_type_id) {%>
+
+                    <option selected value="<%=v.user_type_id%>">
+                      <%=v.user_type_name%>
+                    </option>
+
+                  <% } else {%>
+
+                    <option value="<%=v.user_type_id%>">
+                      <%=v.user_type_name%>
+                    </option>
+
+                    <%}%>
+
                   <% }) %>
+
               </select>
             </div>
 
             <div class="form-check">
               <label class="form-check-label">
-                <input type="checkbox" name="isActive" class="form-check-input"> Active
+                <%if (user.is_active === 'Y') {%>
+                <input type="checkbox" checked name="isActive" class="form-check-input">
+                <% } else { %>
+                  <input type="checkbox" name="isActive" class="form-check-input">
+                  <% } %>
+                Active
               </label>
             </div>
             <button type="submit" class="btn btn-primary">Save data</button>
