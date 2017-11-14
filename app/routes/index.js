@@ -31,6 +31,9 @@ router.get('/', (req, res, next) => __awaiter(this, void 0, void 0, function* ()
     let rs = yield userModel.getUsers(req.db);
     res.render('index', { title: 'Index', users: rs });
 }));
+router.get('/new', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+    res.render('new', { title: 'New user' });
+}));
 router.get('/search', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
     let query = req.query.q;
     let rs = yield userModel.search(req.db, query);

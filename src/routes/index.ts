@@ -35,6 +35,10 @@ router.get('/', async (req, res, next) => {
   res.render('index', { title: 'Index', users: rs });
 });
 
+router.get('/new', async (req, res, next) => {
+  res.render('new', { title: 'New user' });
+});
+
 router.get('/search', async (req, res, next) => {
   let query = req.query.q;
   let rs = await userModel.search(req.db, query);
