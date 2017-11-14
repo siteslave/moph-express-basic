@@ -12,6 +12,7 @@ const express = require("express");
 const router = express.Router();
 const user_1 = require("../models/user");
 const userModel = new user_1.UserModel();
+const userTypeModel = new user_1.UserTypeModel();
 router.get('/test', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
     const db = req.db;
     try {
@@ -32,7 +33,8 @@ router.get('/', (req, res, next) => __awaiter(this, void 0, void 0, function* ()
     res.render('index', { title: 'Index', users: rs });
 }));
 router.get('/new', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
-    res.render('new', { title: 'New user' });
+    let rs = yield userTypeModel.getUserTypeList(req.db);
+    res.render('new', { title: 'New user', types: rs });
 }));
 router.get('/search', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
     let query = req.query.q;

@@ -5,6 +5,7 @@ const router = express.Router();
 
 import { UserModel, UserTypeModel as UserType } from '../models/user';
 const userModel = new UserModel();
+const userTypeModel = new UserType();
 
 // async/await
 
@@ -36,7 +37,9 @@ router.get('/', async (req, res, next) => {
 });
 
 router.get('/new', async (req, res, next) => {
-  res.render('new', { title: 'New user' });
+  let rs = await userTypeModel.getUserTypeList(req.db);
+
+  res.render('new', { title: 'New user', types: rs });
 });
 
 router.get('/search', async (req, res, next) => {
