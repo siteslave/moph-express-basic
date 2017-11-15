@@ -11,6 +11,7 @@ import * as bodyParser from 'body-parser';
 
 import index from './routes/index';
 import login from './routes/login';
+import api from './routes/api';
 
 import * as ejs from 'ejs';
 
@@ -75,6 +76,7 @@ var auth = (req, res, next) => {
   }
 }
 
+app.use('/api', api);
 app.use('/login', login);
 app.use('/', auth, index);
 

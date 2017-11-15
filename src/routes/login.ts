@@ -8,17 +8,17 @@ import { userInfo } from 'os';
 
 const userModel = new UserModel();
 
-router.get('/', (req, res,next) => {
-  res.render('login', {title: 'Login'});
+router.get('/', (req, res, next) => {
+  res.render('login', { title: 'Login' });
 });
 
-router.get('/logout', (req, res,next) => {
+router.get('/logout', (req, res, next) => {
   req.session.destroy(() => {
     res.redirect('/login')
   });
 });
 
-router.post('/', async(req, res,next) => {
+router.post('/', async (req, res, next) => {
 
   let username = req.body.username;
   let password = req.body.password;
@@ -34,11 +34,11 @@ router.post('/', async(req, res,next) => {
       res.redirect('/');
     } else {
       req.session.error = 'ชื่อผู้ใช้งาน/รหัสผ่านไม่ถูกต้อง';
-      res.render('login', { title: 'Login'})
+      res.render('login', { title: 'Login' })
     }
   } else {
     req.session.error = 'ข้อมูลไม่ครบถ้วน';
-    res.render('login', { title: 'Login'})
+    res.render('login', { title: 'Login' })
   }
 });
 

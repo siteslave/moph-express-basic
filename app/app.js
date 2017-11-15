@@ -8,6 +8,7 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const index_1 = require("./routes/index");
 const login_1 = require("./routes/login");
+const api_1 = require("./routes/api");
 const ejs = require("ejs");
 const session = require('express-session');
 const Knex = require("knex");
@@ -54,6 +55,7 @@ var auth = (req, res, next) => {
         res.redirect('/login');
     }
 };
+app.use('/api', api_1.default);
 app.use('/login', login_1.default);
 app.use('/', auth, index_1.default);
 app.use((req, res, next) => {
