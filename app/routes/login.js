@@ -12,6 +12,8 @@ const express = require("express");
 const router = express.Router();
 const user_1 = require("../models/user");
 const crypto = require("crypto");
+const jwt_1 = require("../models/jwt");
+const jwt = new jwt_1.Jwt();
 const userModel = new user_1.UserModel();
 router.get('/', (req, res, next) => {
     res.render('login', { title: 'Login' });
@@ -40,6 +42,25 @@ router.post('/', (req, res, next) => __awaiter(this, void 0, void 0, function* (
     else {
         req.session.error = 'ข้อมูลไม่ครบถ้วน';
         res.render('login', { title: 'Login' });
+    }
+}));
+router.post('/auth', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+    let username = req.body.username;
+    let password = req.body.password;
+    if (username && password) {
+        let encPassword = crypto.createHash('md5').update(password).digest('hex');
+        let rs = yield userModel.doLogin(req.db, username, encPassword);
+        if (rs.length) {
+            let fullname = rs[0].fullname;
+            let token = jwt.sign({ fullname: fullname });
+            res.send({ ok: true, token: token });
+        }
+        else {
+            res.send({ ok: false, error: 'ชื่อผู้ใช้งาน/รหัสผ่าน ไม่ถูกต้อง' });
+        }
+    }
+    else {
+        res.send({ ok: false, error: 'ข้อมูลไม่ครบถ้วน' });
     }
 }));
 exports.default = router;
