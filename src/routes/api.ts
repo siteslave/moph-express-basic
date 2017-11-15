@@ -3,15 +3,40 @@ import * as express from 'express';
 const router = express.Router();
 import * as crypto from 'crypto';
 
-import { UserModel } from './../models/user';
+import { UserModel, UserTypeModel } from './../models/user';
 
 const userModel = new UserModel();
+const userTypeModel = new UserTypeModel();
 
 // localhost:8080/api/users
 router.get('/users', async(req, res, next) => {
 
   try {
     let rs = await userModel.getUsers(req.db);
+    res.send({ok: true, rows: rs});
+  } catch (error) {
+    res.send({ok:false, error: error.message});
+  }
+ 
+})
+
+// localhost:8080/api/users
+router.get('/users/:userId', async(req, res, next) => {
+  let userId = req.params.userId;
+  try {
+    let rs = await userModel.getDetail(req.db, userId);
+    res.send({ok: true, rows: rs[0]});
+  } catch (error) {
+    res.send({ok:false, error: error.message});
+  }
+ 
+})
+
+// localhost:8080/api/types
+router.get('/types', async(req, res, next) => {
+
+  try {
+    let rs = await userTypeModel.getUserTypeList(req.db);
     res.send({ok: true, rows: rs});
   } catch (error) {
     res.send({ok:false, error: error.message});

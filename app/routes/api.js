@@ -13,9 +13,29 @@ const router = express.Router();
 const crypto = require("crypto");
 const user_1 = require("./../models/user");
 const userModel = new user_1.UserModel();
+const userTypeModel = new user_1.UserTypeModel();
 router.get('/users', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
     try {
         let rs = yield userModel.getUsers(req.db);
+        res.send({ ok: true, rows: rs });
+    }
+    catch (error) {
+        res.send({ ok: false, error: error.message });
+    }
+}));
+router.get('/users/:userId', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+    let userId = req.params.userId;
+    try {
+        let rs = yield userModel.getDetail(req.db, userId);
+        res.send({ ok: true, rows: rs[0] });
+    }
+    catch (error) {
+        res.send({ ok: false, error: error.message });
+    }
+}));
+router.get('/types', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        let rs = yield userTypeModel.getUserTypeList(req.db);
         res.send({ ok: true, rows: rs });
     }
     catch (error) {
