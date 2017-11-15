@@ -2,7 +2,7 @@
 import * as jwt from 'jsonwebtoken';
 
 export class Jwt {
-  secretKey: string = '12345678995444850022200520';
+  secretKey: string = process.env.SECRET_KEY;
 
   sign(payload: any) {
     let token = jwt.sign(payload, this.secretKey, {

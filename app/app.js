@@ -8,6 +8,8 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const cors = require("cors");
+const jwt_1 = require("./models/jwt");
+const jwt = new jwt_1.Jwt();
 const index_1 = require("./routes/index");
 const login_1 = require("./routes/login");
 const api_1 = require("./routes/api");
@@ -57,7 +59,30 @@ var auth = (req, res, next) => {
         res.redirect('/login');
     }
 };
-app.use('/api', api_1.default);
+var authApi = (req, res, next) => {
+    let token = null;
+    if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+        token = req.headers.authorization.split(' ')[1];
+    }
+    else if (req.query && req.query.token) {
+        token = req.query.token;
+    }
+    else if (req.body && req.body.toke) {
+        token = req.body.token;
+    }
+    else {
+        token = req.body.token;
+    }
+    jwt.verify(token)
+        .then((decoded) => {
+        req.decoded = decoded;
+        next();
+    })
+        .catch((error) => {
+        return res.send({ ok: false, error: 'No token!' });
+    });
+};
+app.use('/api', authApi, api_1.default);
 app.use('/login', login_1.default);
 app.use('/', auth, index_1.default);
 app.use((req, res, next) => {

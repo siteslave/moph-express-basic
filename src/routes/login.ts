@@ -56,7 +56,8 @@ router.post('/auth', async (req, res, next) => {
 
     if (rs.length) {
       let fullname = rs[0].fullname;
-      let token = jwt.sign({fullname: fullname});
+      let user_id = rs[0].user_id;
+      let token = jwt.sign({fullname: fullname, userId: user_id});
       res.send({ok: true, token: token})
     } else {
       res.send({ok: false, error: 'ชื่อผู้ใช้งาน/รหัสผ่าน ไม่ถูกต้อง'})

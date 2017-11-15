@@ -11,6 +11,10 @@ import * as bodyParser from 'body-parser';
 import * as ejs from 'ejs';
 import * as cors from 'cors';
 
+import { Jwt } from './models/jwt';
+
+const jwt = new Jwt();
+
 import index from './routes/index';
 import login from './routes/login';
 import api from './routes/api';
@@ -78,7 +82,30 @@ var auth = (req, res, next) => {
   }
 }
 
-app.use('/api', api);
+var authApi = (req, res, next) => {
+  let token = null;
+
+  if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+    token = req.headers.authorization.split(' ')[1];
+  } else if (req.query && req.query.token){
+    token = req.query.token;
+  } else if (req.body && req.body.toke) {
+    token = req.body.token;
+  } else {
+    token = req.body.token;
+  }
+
+  jwt.verify(token)
+  .then((decoded: any) => {
+    req.decoded = decoded;
+    next();
+  })
+  .catch((error: any) => {
+    return res.send({ok: false, error: 'No token!'});
+  })
+}
+
+app.use('/api', authApi, api);
 app.use('/login', login);
 app.use('/', auth, index);
 

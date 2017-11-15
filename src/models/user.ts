@@ -57,7 +57,7 @@ export class UserModel {
 
   doLogin(db: Knex, username: any, password: any) {
     return db('users')
-    .select(db.raw('concat(first_name, " ", last_name) as fullname'))
+    .select('user_id', db.raw('concat(first_name, " ", last_name) as fullname'))
     .where({
       username: username,
       password: password

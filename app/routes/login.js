@@ -52,7 +52,8 @@ router.post('/auth', (req, res, next) => __awaiter(this, void 0, void 0, functio
         let rs = yield userModel.doLogin(req.db, username, encPassword);
         if (rs.length) {
             let fullname = rs[0].fullname;
-            let token = jwt.sign({ fullname: fullname });
+            let user_id = rs[0].user_id;
+            let token = jwt.sign({ fullname: fullname, userId: user_id });
             res.send({ ok: true, token: token });
         }
         else {

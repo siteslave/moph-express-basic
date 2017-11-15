@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const jwt = require("jsonwebtoken");
 class Jwt {
     constructor() {
-        this.secretKey = '12345678995444850022200520';
+        this.secretKey = process.env.SECRET_KEY;
     }
     sign(payload) {
         let token = jwt.sign(payload, this.secretKey, {

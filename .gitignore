@@ -4,3 +4,5 @@ npm-debug.log
 .settings/*
 .git/*
 bower_components/*
+
+.env
