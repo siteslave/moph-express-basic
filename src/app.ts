@@ -8,12 +8,12 @@ import * as favicon from 'serve-favicon';
 import * as logger from 'morgan';
 import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
+import * as ejs from 'ejs';
+import * as cors from 'cors';
 
 import index from './routes/index';
 import login from './routes/login';
 import api from './routes/api';
-
-import * as ejs from 'ejs';
 
 const session = require('express-session');
 
@@ -35,6 +35,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(cors());
 
 const connection: MySqlConnectionConfig = {
   host: process.env.DB_HOST,
@@ -94,7 +96,7 @@ app.use((req, res, next) => {
 if (process.env.NODE_ENV === 'development') {
   app.use((err: Error, req, res, next) => {
     res.status(err['status'] || 500);
-    res.render('error', {
+    res.send({
       title: 'error',
       message: err.message,
       error: err
@@ -106,7 +108,7 @@ if (process.env.NODE_ENV === 'development') {
 // no stacktrace leaked to user
 app.use((err: Error, req, res, next) => {
   res.status(err['status'] || 500);
-  res.render('error', {
+  res.send({
     title: 'error',
     message: err.message,
     error: {}

@@ -52,7 +52,7 @@ router.post('/users', async (req, res, next) => {
 // localhost:8080/api/users/xx
 router.put('/users/:userId', async (req, res, next) => {
   let userId = req.params.userId;
-  
+
   let password = req.body.password;
   let firstName = req.body.firstName;
   let lastName = req.body.lastName;
@@ -80,5 +80,16 @@ router.put('/users/:userId', async (req, res, next) => {
   }
 
 });
+
+// localhost:8080/api/users/xx
+router.delete('/users/:userId', async (req, res, next) => {
+  try {
+    let userId = req.params.userId;
+    await userModel.removeUser(req.db, userId);
+    res.send({ok: true})
+  } catch (error) {
+    res.send({ok: false, error: error.message})
+  }
+})
 
 export default router;

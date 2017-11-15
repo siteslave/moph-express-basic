@@ -6,10 +6,11 @@ const path = require("path");
 const logger = require("morgan");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
+const ejs = require("ejs");
+const cors = require("cors");
 const index_1 = require("./routes/index");
 const login_1 = require("./routes/login");
 const api_1 = require("./routes/api");
-const ejs = require("ejs");
 const session = require('express-session');
 const Knex = require("knex");
 const app = express();
@@ -21,6 +22,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
 const connection = {
     host: process.env.DB_HOST,
     port: +process.env.DB_PORT,
@@ -66,7 +68,7 @@ app.use((req, res, next) => {
 if (process.env.NODE_ENV === 'development') {
     app.use((err, req, res, next) => {
         res.status(err['status'] || 500);
-        res.render('error', {
+        res.send({
             title: 'error',
             message: err.message,
             error: err
@@ -75,7 +77,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 app.use((err, req, res, next) => {
     res.status(err['status'] || 500);
-    res.render('error', {
+    res.send({
         title: 'error',
         message: err.message,
         error: {}

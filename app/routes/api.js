@@ -71,5 +71,15 @@ router.put('/users/:userId', (req, res, next) => __awaiter(this, void 0, void 0,
         res.send({ ok: false, error: 'ข้อมูลไม่ครบถ้วน' });
     }
 }));
+router.delete('/users/:userId', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        let userId = req.params.userId;
+        yield userModel.removeUser(req.db, userId);
+        res.send({ ok: true });
+    }
+    catch (error) {
+        res.send({ ok: false, error: error.message });
+    }
+}));
 exports.default = router;
 //# sourceMappingURL=api.js.map
