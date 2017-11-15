@@ -46,5 +46,30 @@ router.post('/users', (req, res, next) => __awaiter(this, void 0, void 0, functi
         res.send({ ok: false, error: 'ข้อมูลไม่ครบถ้วน' });
     }
 }));
+router.put('/users/:userId', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+    let userId = req.params.userId;
+    let password = req.body.password;
+    let firstName = req.body.firstName;
+    let lastName = req.body.lastName;
+    let isActive = req.body.isActive;
+    let userTypeId = req.body.userType;
+    if (userId && firstName && lastName) {
+        let user = {
+            first_name: firstName,
+            last_name: lastName,
+            is_active: isActive,
+            user_type_id: userTypeId
+        };
+        if (password) {
+            let encPassword = crypto.createHash('md5').update(password).digest('hex');
+            user.password = encPassword;
+        }
+        yield userModel.updateUser(req.db, userId, user);
+        res.send({ ok: true });
+    }
+    else {
+        res.send({ ok: false, error: 'ข้อมูลไม่ครบถ้วน' });
+    }
+}));
 exports.default = router;
 //# sourceMappingURL=api.js.map
