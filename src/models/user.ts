@@ -4,7 +4,7 @@ import * as mysql from 'mysql';
 export class UserModel {
   getUsers(db: Knex) {
     return db('users as u')
-      .select('u.user_id', 'u.is_active', 'u.username', 'u.first_name', 'u.last_name', 'ut.user_type_name')
+      .select('u.user_id', 'u.birth', 'u.sex', 'u.is_active', 'u.username', 'u.first_name', 'u.last_name', 'ut.user_type_name')
       .leftJoin('user_types as ut', 'ut.user_type_id', 'u.user_type_id')
       // .limit(10)
   }
