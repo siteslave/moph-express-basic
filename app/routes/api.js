@@ -33,6 +33,15 @@ router.get('/users/:userId', (req, res, next) => __awaiter(this, void 0, void 0,
         res.send({ ok: false, error: error.message });
     }
 }));
+router.get('/user-types', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        let rs = yield userModel.getUserTypeList(req.db);
+        res.send({ ok: true, rows: rs });
+    }
+    catch (error) {
+        res.send({ ok: false, error: error.message });
+    }
+}));
 router.get('/types', (req, res, next) => __awaiter(this, void 0, void 0, function* () {
     try {
         let rs = yield userTypeModel.getUserTypeList(req.db);

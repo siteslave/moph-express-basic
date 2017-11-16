@@ -32,6 +32,16 @@ router.get('/users/:userId', async(req, res, next) => {
  
 })
 
+router.get('/user-types', async(req, res, next) => {
+  try {
+    let rs = await userModel.getUserTypeList(req.db);
+    res.send({ok: true, rows: rs});
+  } catch (error) {
+    res.send({ok:false, error: error.message});
+  }
+ 
+})
+
 // localhost:8080/api/types
 router.get('/types', async(req, res, next) => {
 
