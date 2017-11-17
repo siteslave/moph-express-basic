@@ -42,12 +42,13 @@ io.on('connection', (socket: any) => {
   socket.on('welcome', (data: any) => {
     // response
     console.log(data);
+    io.emit('welcome-callback', 'Testttttttt')
   });
 
-  socket.on('adduser', () => {
+  socket.on('adduser', (data) => {
     console.log('Add user!')
     // response
-    io.emit('added-user', 'xxxxxx');
+    io.emit('added-user', 'Server response: ' + data);
   });
 
 });
