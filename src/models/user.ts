@@ -49,6 +49,21 @@ export class UserModel {
     .update(user); // UPDATE users SET xx=yy WHERE user_id=xxx
   }
 
+  updateLatLng(db: Knex, userId: any, lat: any, lng: any) {
+    return db('users')
+    .where('user_id', userId)
+    .update({
+      lat: lat,
+      lng: lng
+    });
+  }
+
+  getLatLng(db: Knex, userId: any) {
+    return db('users')
+    .select('lat', 'lng')
+    .where('user_id', userId);
+  }
+
   getDetail(db: Knex, userId: any) {
     return db('users')
     .select('user_id', 'username', 'first_name', 'last_name', 'user_type_id', 'is_active')

@@ -32,6 +32,33 @@ router.get('/users/:userId', async(req, res, next) => {
  
 })
 
+router.get('/users/maps/:userId', async(req, res, next) => {
+  let userId = req.params.userId;
+  try {
+    let rs = await userModel.getLatLng(req.db, userId);
+    if (rs.length) {
+      res.send({ok: true, lat: rs[0].lat, lng: rs[0].lng});
+    } else {
+      res.send({ok: false})
+    }
+  } catch (error) {
+    res.send({ok:false, error: error.message});
+  } 
+})
+
+router.put('/users/maps/:userId', async(req, res, next) => {
+  let userId = req.params.userId;
+  let lat = req.body.lat;
+  let lng = req.body.lng;
+
+  try {
+    let rs = await userModel.updateLatLng(req.db, userId, lat, lng);
+    res.send({ok: true});
+  } catch (error) {
+    res.send({ok:false, error: error.message});
+  } 
+})
+
 router.get('/user-types', async(req, res, next) => {
   try {
     let rs = await userModel.getUserTypeList(req.db);
