@@ -5,6 +5,11 @@ declare global {
     export interface Request {
       db: Knex;
       session: any;
+      io: any;
+    }
+
+    export interface Application {
+      io: any;
     }
   }
 }

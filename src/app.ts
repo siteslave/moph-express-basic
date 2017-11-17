@@ -20,11 +20,37 @@ import login from './routes/login';
 import api from './routes/api';
 
 const session = require('express-session');
+const socketIo = require('socket.io');
+
+const io = socketIo();
 
 import Knex = require('knex');
 import { MySqlConnectionConfig } from 'knex';
 
 const app: express.Express = express();
+
+app.io = io;
+
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+})
+
+io.on('connection', (socket: any) => {
+  console.log('User connected!');
+
+  socket.on('welcome', (data: any) => {
+    // response
+    console.log(data);
+  });
+
+  socket.on('adduser', () => {
+    console.log('Add user!')
+    // response
+    io.emit('added-user', 'xxxxxx');
+  });
+
+});
 
 //view engine setup
 

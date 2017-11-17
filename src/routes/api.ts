@@ -102,6 +102,7 @@ router.post('/users', async (req, res, next) => {
       user_type_id: userTypeId
     }
 
+    req.io.emit('added-user', firstName);
     await userModel.saveUser(req.db, user);
     res.send({ok: true});
 
